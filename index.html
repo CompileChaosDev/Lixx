@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MALIX AUTO SCRAPER</title>
+<style>
+:root{--bg:#07020f;--card:#0f0720;--line:#3b1b63;--text:#f4eaff;--muted:#a18bc0;--a:#c13dff;--a2:#2ee6f0;--a3:#2ee88a;--bad:#ff8f86;--warn:#ffd36b;--ink:#fff;--glow:.55;
+color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="cream"]{--bg:#0d0b08;--card:#16130e;--line:#3a3622;--text:#f3ecd8;--muted:#a39b86;--a:#e8d9a0;--a2:#7fd0c4;--a3:#9fd39a;--ink:#1b170c;--glow:.35}
+html{scroll-padding-top:12px;scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;
+background-image:linear-gradient(color-mix(in srgb,var(--a) 14%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--a) 14%,transparent) 1px,transparent 1px);background-size:26px 26px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0,color-mix(in srgb,var(--a) 22%,transparent),transparent 70%),radial-gradient(ellipse at 50% 100%,transparent 30%,var(--bg) 100%);pointer-events:none}
+.wrap{position:relative;max-width:620px;margin:0 auto;padding:14px 16px 130px}
+svg.i{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.12em}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.ib{width:48px;height:48px;border-radius:15px;background:var(--card);border:1px solid var(--a);color:var(--a);font-size:21px;box-shadow:0 0 16px color-mix(in srgb,var(--a) calc(var(--glow)*100%),transparent),inset 0 0 12px color-mix(in srgb,var(--a) 20%,transparent);cursor:pointer;padding:0;display:grid;place-items:center}
+.logo{padding:12px 26px;border-radius:18px;border:1px solid var(--a);background:var(--card);font:800 18px/1 Georgia,serif;letter-spacing:.2em;box-shadow:0 0 26px color-mix(in srgb,var(--a) calc(var(--glow)*100%),transparent),inset 0 0 14px color-mix(in srgb,var(--a) 22%,transparent)}
+.logo .i{color:var(--a);margin-right:6px}
+.hud{position:relative;background:linear-gradient(160deg,color-mix(in srgb,var(--c,var(--a)) 9%,var(--card)),var(--card));border:1px solid color-mix(in srgb,var(--c,var(--a)) 55%,var(--line));border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 0 22px color-mix(in srgb,var(--c,var(--a)) calc(var(--glow)*45%),transparent),inset 0 0 30px color-mix(in srgb,var(--c,var(--a)) 10%,transparent)}
+.hud::before,.hud::after{content:"";position:absolute;width:26px;height:26px;border:3px solid var(--c,var(--a));pointer-events:none;filter:drop-shadow(0 0 5px var(--c,var(--a)))}
+.hud::before{top:-2px;left:-2px;border-right:0;border-bottom:0;border-top-left-radius:20px}
+.hud::after{bottom:-2px;right:-2px;border-left:0;border-top:0;border-bottom-right-radius:20px}
+.c2{--c:var(--a2)}.c3{--c:var(--a3)}
+.tab{position:absolute;top:-9px;left:26px;background:var(--bg);color:var(--c,var(--a));font-size:11px;letter-spacing:.16em;padding:0 8px}
+h2{font:700 16px/1.2 Georgia,serif;margin:0 0 12px}
+.hero{padding:0;overflow:hidden;height:250px}
+.hero svg.art{position:absolute;inset:0;width:100%;height:100%}
+.hero .txt{position:absolute;left:18px;right:18px;bottom:16px}
+.sys{display:inline-flex;gap:8px;align-items:center;font:12px ui-monospace,Menlo,monospace;color:var(--a3);border:1px solid var(--a3);background:color-mix(in srgb,var(--bg) 70%,transparent);border-radius:10px;padding:5px 11px;margin-bottom:10px}
+.sys i{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 8px var(--bad)}
+.hero p{font:800 19px/1.3 ui-monospace,Menlo,monospace;margin:0 0 3px;text-shadow:0 0 14px var(--a)}
+.hero small{color:var(--a3);font:12px ui-monospace,Menlo,monospace}
+.ring{transform-origin:300px 112px;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+input[type=url]{flex:1 1 200px;min-width:0;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:13px;padding:14px;font-size:15px}
+input:focus,button:focus-visible,select:focus-visible{outline:2px solid var(--a2);outline-offset:2px}
+.btn{background:var(--a);color:var(--ink);border:0;border-radius:13px;padding:14px 20px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 0 20px color-mix(in srgb,var(--a) 60%,transparent)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.msg{margin-top:10px;font-size:13px;color:var(--muted);min-height:18px}.msg.err{color:var(--bad)}
+.stat{display:flex;align-items:center;gap:14px}
+.ico{width:56px;height:56px;border-radius:16px;border:1px solid var(--c);color:var(--c);display:grid;place-items:center;font-size:26px;flex:none;background:color-mix(in srgb,var(--c) 14%,transparent);box-shadow:0 0 16px color-mix(in srgb,var(--c) 35%,transparent)}
+.stat h3{margin:0;font-size:17px;letter-spacing:.1em}.stat small{color:var(--muted);font:12px ui-monospace,Menlo,monospace}
+.val{margin-left:auto;min-width:60px;text-align:center;border:1px solid var(--c);color:var(--c);border-radius:14px;padding:11px 14px;font-weight:800;font-size:17px;background:color-mix(in srgb,var(--c) 10%,transparent);text-shadow:0 0 10px var(--c)}
+.bar{height:9px;background:var(--bg);border-radius:99px;overflow:hidden;border:1px solid var(--line);margin:4px 0 14px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--a2));transition:width .4s;box-shadow:0 0 12px var(--a)}
+.badge{float:right;padding:4px 11px;border-radius:99px;font:700 12px ui-monospace,Menlo,monospace;border:1px solid var(--line);color:var(--muted)}
+.badge.WORKING{color:var(--a3);border-color:var(--a3)}.badge.FAILED{color:var(--bad);border-color:var(--bad)}.badge.UNVERIFIED{color:var(--warn);border-color:var(--warn)}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+li.st{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:color-mix(in srgb,var(--bg) 80%,transparent);border:1px solid var(--line);color:var(--muted);font:13px ui-monospace,Menlo,monospace}
+li.st::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
+li.st.done{color:var(--text)}li.st.done::before{background:var(--a3);box-shadow:0 0 8px var(--a3)}
+li.st.now{background:var(--a);color:var(--ink);border-color:var(--a);box-shadow:0 0 16px var(--a)}li.st.now::before{background:var(--ink)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}
+.empty{color:var(--muted);font-size:14px;margin:0}
+.banner{border:1px dashed var(--warn);color:var(--warn);border-radius:13px;padding:10px 12px;font-size:13px;margin-bottom:16px;background:color-mix(in srgb,var(--warn) 7%,transparent)}
+pre{margin:0 0 10px;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:12px;font:13px/1.5 ui-monospace,Menlo,monospace;overflow-x:auto}
+.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
+select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:13px;padding:11px;width:100%}
+.hidden{display:none}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:6px;padding:9px;border-radius:30px;background:color-mix(in srgb,var(--card) 90%,transparent);border:1px solid var(--a);box-shadow:0 0 28px color-mix(in srgb,var(--a) calc(var(--glow)*100%),transparent);backdrop-filter:blur(10px);z-index:20}
+nav button{width:92px;height:56px;border-radius:22px;border:0;background:transparent;color:var(--muted);font-size:22px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+nav button span{font:600 11px/1 Segoe UI,Roboto,sans-serif}
+a.btn{text-decoration:none;display:inline-block}
+nav button.on{background:var(--a);color:var(--ink);box-shadow:0 0 18px var(--a)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ring{animation:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></symbol>
+<symbol id="list" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+<symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></symbol>
+<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="bars" viewBox="0 0 24 24"><path d="M5 20V11M11 20V4M17 20v-6M3 20h18"/></symbol>
+<symbol id="batt" viewBox="0 0 24 24"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 11v2M7 10v4"/></symbol>
+<symbol id="spark" viewBox="0 0 24 24"><path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/></symbol>
+<symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+<symbol id="theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-5.5A8 8 0 1 1 21 12z"/></symbol>
+</defs></svg>
+<div class="wrap">
+  <div class="top">
+    <button class="ib" id="theme" aria-label="Ganti warna tema"><svg class="i"><use href="#theme"/></svg></button>
+    <div class="logo"><svg class="i"><use href="#bolt"/></svg>MALIX</div>
+    <button class="ib" id="hbtn" aria-label="Ke riwayat"><svg class="i"><use href="#clock"/></svg></button>
+  </div>
+
+<div class="page" id="p-home">
+  <section class="hud hero" id="home">
+    <svg class="art" viewBox="0 0 600 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="core"><stop offset="0" stop-color="#000"/><stop offset=".8" stop-color="#05010a"/><stop offset="1" stop-color="var(--a)"/></radialGradient>
+        <linearGradient id="disc" x1="0" x2="1"><stop offset="0" stop-color="var(--a)" stop-opacity="0"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="var(--a)" stop-opacity="0"/></linearGradient>
+        <filter id="bl"><feGaussianBlur stdDeviation="6"/></filter>
+      </defs>
+      <g fill="#fff" opacity=".7"><circle cx="40" cy="30" r="1.2"/><circle cx="130" cy="70" r="1"/><circle cx="520" cy="40" r="1.4"/><circle cx="470" cy="150" r="1"/><circle cx="80" cy="150" r="1"/><circle cx="360" cy="20" r="1"/></g>
+      <g transform="rotate(-14 300 112)">
+        <ellipse cx="300" cy="112" rx="270" ry="34" fill="url(#disc)" filter="url(#bl)" opacity=".9"/>
+        <ellipse cx="300" cy="112" rx="240" ry="20" fill="none" stroke="url(#disc)" stroke-width="3"/>
+      </g>
+      <g class="ring"><circle cx="300" cy="112" r="64" fill="url(#core)" stroke="var(--a)" stroke-width="2" stroke-dasharray="6 5"/></g>
+      <circle cx="300" cy="112" r="58" fill="#030008"/>
+      <g transform="rotate(-14 300 112)"><path d="M40 112 Q300 150 560 112" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/></g>
+    </svg>
+    <div class="txt">
+      <div class="sys"><i id="dot"></i><span>BACKEND: OFFLINE</span></div>
+      <p>&gt; MALIX AUTO SCRAPER</p>
+      <small>&gt; URL masuk, scraper dibuat dan diuji otomatis</small>
+    </div>
+  </section>
+
+  <section class="hud c2"><span class="tab">TARGET</span>
+    <div class="row">
+      <input id="url" type="url" inputmode="url" value="https://ssstik.io/id" aria-label="URL website target">
+      <button class="btn" id="go">Analyze &amp; Generate</button>
+    </div>
+    <div id="msg" class="msg" role="status"></div>
+  </section>
+
+  <div class="banner">Ini baru tampilan. Backend belum terhubung, jadi belum ada analisis atau tes nyata. Tidak ada hasil palsu kecuali kamu aktifkan pratinjau di bawah.</div>
+
+  <div class="hud"><span class="tab">RIWAYAT</span><div class="stat" style="--c:var(--a)"><div class="ico"><svg class="i"><use href="#bars"/></svg></div><div><h3>TOTAL TES</h3><small>&gt; tersimpan di perangkat ini</small></div><div class="val" id="nTests">0</div></div></div>
+  <div class="hud c2"><span class="tab">PERANGKAT</span><div class="stat" style="--c:var(--a2)"><div class="ico"><svg class="i"><use href="#batt"/></svg></div><div><h3>BATERAI HP</h3><small id="battSub">&gt; membaca baterai...</small></div><div class="val" id="batt">-</div></div></div>
+  <div class="hud c3"><span class="tab">AUTO-FIX</span><div class="stat" style="--c:var(--a3)"><div class="ico"><svg class="i"><use href="#spark"/></svg></div><div><h3>BATAS PERBAIKAN</h3><small>&gt; maksimal per proses</small></div><div class="val">3</div></div></div>
+
+  <section class="hud" id="proses"><span class="tab">PROSES</span>
+    <h2>Tahapan <span id="badge" class="badge">MENUNGGU</span></h2>
+    <div class="bar" aria-hidden="true"><i id="fill"></i></div>
+    <ol id="steps"></ol>
+  </section>
+
+  <section class="hud c2" id="hasil"><span class="tab">ANALISIS</span><h2>Analisis website</h2><div id="analysis"><p class="empty">Belum ada analisis. Jalankan Analyze &amp; Generate dengan backend aktif.</p></div></section>
+  <section class="hud c3"><span class="tab">TES</span><h2>Hasil pengujian</h2><div id="tests"><p class="empty">Belum ada tes yang dijalankan.</p></div></section>
+  <section class="hud"><span class="tab">ERROR</span><h2>Error dan rekomendasi</h2><div id="errors"><p class="empty">Tidak ada error tercatat.</p></div></section>
+
+  <section class="hud c3 hidden" id="codeCard"><span class="tab">KODE</span><h2>Kode scraper</h2><pre id="code"></pre>
+    <div class="row"><button class="btn" id="copy">Copy Code</button><button class="btn ghost" id="dl">Download Code</button></div></section>
+
+</div>
+<div class="page hidden" id="p-history">
+  <section class="hud c2" id="riwayat"><span class="tab">HISTORY</span>
+    <h2>Test History <button class="btn ghost" id="clear" style="float:right;padding:6px 10px;font-size:12px">Hapus</button></h2>
+    <div class="scroll"><table><thead><tr><th>URL</th><th>Waktu</th><th>Versi</th><th>Validasi</th><th>Unit</th><th>Functional</th><th>Auto-fix</th><th>Status</th></tr></thead><tbody id="hist"></tbody></table></div>
+    <p class="empty" id="histEmpty">Belum ada riwayat.</p></section>
+
+</div>
+<div class="page hidden" id="p-contact">
+  <section class="hud c2"><span class="tab">OWNER</span><h2>Contact Owner</h2>
+    <p class="empty" id="ownerNote">Hubungi owner kalau ada kendala atau saran.</p>
+    <div class="row" style="margin-top:14px"><a class="btn" id="wa" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost" id="tg" target="_blank" rel="noopener">Telegram</a></div></section>
+</div>
+</div>
+
+<nav aria-label="Navigasi">
+  <button class="on" data-p="home"><svg class="i"><use href="#home"/></svg><span>Generator</span></button>
+  <button data-p="history"><svg class="i"><use href="#clock"/></svg><span>History</span></button>
+  <button data-p="contact"><svg class="i"><use href="#chat"/></svg><span>Owner</span></button>
+</nav>
+
+<script>
+const STAGES=["ANALYZING","CHECKING FEASIBILITY","GENERATING","VALIDATING","UNIT TESTING","FUNCTIONAL TESTING","ANALYZING ERROR","AUTO FIX","RETESTING"];
+const $=id=>document.getElementById(id);
+STAGES.forEach(s=>{const li=document.createElement("li");li.className="st";li.textContent=s;$("steps").appendChild(li)});
+function setState(status,idx){
+  [...$("steps").children].forEach((li,i)=>{li.className="st"+(idx!=null&&i<idx?" done":"")+(idx!=null&&i===idx?" now":"")});
+  const f=["WORKING","FAILED","UNVERIFIED"].includes(status);
+  $("badge").textContent=status;$("badge").className="badge "+(f?status:"");
+  $("fill").style.width=f?"100%":(idx==null?"0":Math.round((idx+1)/STAGES.length*100)+"%");
+}
+function validUrl(v){try{const u=new URL(v);return /^https?:$/.test(u.protocol)&&!/^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.0\.0\.0)/.test(u.hostname)}catch(e){return false}}
+$("go").onclick=()=>{
+  const v=$("url").value.trim(),m=$("msg");
+  if(!validUrl(v)){m.className="msg err";m.textContent="URL tidak valid atau menunjuk ke alamat internal. Gunakan http(s) ke website publik.";return}
+  m.className="msg";m.textContent="Backend belum terhubung. Tes nyata belum bisa dijalankan, jadi status tetap UNVERIFIED.";
+  setState("UNVERIFIED",null);
+  const h=load();h.unshift({url:v,time:new Date().toLocaleString("id-ID"),ver:"-",val:"-",unit:"-",fn:"Belum dijalankan",fix:0,status:"UNVERIFIED"});save(h.slice(0,20));render();
+};
+function load(){try{return JSON.parse(localStorage.getItem("malix_hist")||"[]")}catch(e){return[]}}
+function save(h){try{localStorage.setItem("malix_hist",JSON.stringify(h))}catch(e){}}
+function render(){const h=load(),b=$("hist");b.innerHTML="";$("nTests").textContent=h.length;$("histEmpty").style.display=h.length?"none":"block";
+  h.forEach(r=>{const tr=document.createElement("tr");[r.url,r.time,r.ver,r.val,r.unit,r.fn,r.fix,r.status].forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.appendChild(td)});b.appendChild(tr)})}
+$("clear").onclick=()=>{save([]);render()};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("code").textContent);$("copy").textContent="Tersalin"}catch(e){$("copy").textContent="Gagal menyalin"}setTimeout(()=>$("copy").textContent="Copy Code",1500)};
+$("dl").onclick=()=>{const a=document.createElement("a");a.href="data:text/javascript;charset=utf-8,"+encodeURIComponent($("code").textContent);a.download="scraper.js";a.click()};
+$("theme").onclick=()=>{const r=document.documentElement,c=r.dataset.theme==="cream";if(c)delete r.dataset.theme;else r.dataset.theme="cream";try{localStorage.setItem("malix_theme",c?"":"cream")}catch(e){}};
+try{if(localStorage.getItem("malix_theme")==="cream")document.documentElement.dataset.theme="cream"}catch(e){}
+function show(p){document.querySelectorAll(".page").forEach(x=>x.classList.toggle("hidden",x.id!=="p-"+p));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.p===p));window.scrollTo(0,0)}
+$("hbtn").onclick=()=>show("history");
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.p));
+const OWNER={wa:"",tg:"malix_raw"};
+if(!OWNER.wa)$("wa").style.display="none";
+if(OWNER.wa)$("wa").href="https://wa.me/"+OWNER.wa.replace(/\D/g,"");
+if(OWNER.tg)$("tg").href="https://t.me/"+OWNER.tg.replace("@","");
+if(!OWNER.wa&&!OWNER.tg){$("ownerNote").textContent="Kontak owner belum diisi.";[$("wa"),$("tg")].forEach(a=>{a.style.opacity=.4;a.style.pointerEvents="none"})}
+(function(){const v=$("batt"),s=$("battSub");
+if(!navigator.getBattery){v.textContent="--%";s.textContent="> browser ini tidak mendukung, buka di Chrome Android";return}
+navigator.getBattery().then(b=>{const up=()=>{v.textContent=Math.min(100,Math.max(1,Math.round(b.level*100)))+"%";s.textContent="> "+(b.charging?"sedang mengisi daya":"tidak mengisi daya")};up();["levelchange","chargingchange"].forEach(e=>b.addEventListener(e,up))}).catch(()=>{v.textContent="--%";s.textContent="> akses baterai ditolak"})})();
+setState("MENUNGGU",null);render();
+</script>
+</body>
+</html>
