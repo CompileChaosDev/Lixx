@@ -32,6 +32,8 @@ h2{font:700 16px/1.2 Georgia,serif;margin:0 0 12px}
 .sys{display:inline-flex;gap:8px;align-items:center;font:12px ui-monospace,Menlo,monospace;color:var(--a3);border:1px solid var(--a3);background:color-mix(in srgb,var(--bg) 70%,transparent);border-radius:10px;padding:5px 11px;margin-bottom:10px}
 .sys i{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 8px var(--bad)}
 .hero p{font:800 19px/1.3 ui-monospace,Menlo,monospace;margin:0 0 3px;text-shadow:0 0 14px var(--a)}
+.sys.on{color:var(--a3);border-color:var(--a3)}.sys.on i{background:var(--a3);box-shadow:0 0 8px var(--a3)}
+.sys.off{color:var(--bad);border-color:var(--bad)}
 .hero small{color:var(--a3);font:12px ui-monospace,Menlo,monospace}
 .ring{transform-origin:300px 112px;animation:spin 40s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -61,6 +63,8 @@ pre{margin:0 0 10px;background:var(--bg);border:1px solid var(--line);border-rad
 .scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
 select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:13px;padding:11px;width:100%}
+.hc{border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:10px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.hc b{overflow-wrap:anywhere}.hc small{color:var(--muted);display:block;margin-top:4px}
 .hidden{display:none}
 nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:6px;padding:9px;border-radius:30px;background:color-mix(in srgb,var(--card) 90%,transparent);border:1px solid var(--a);box-shadow:0 0 28px color-mix(in srgb,var(--a) calc(var(--glow)*100%),transparent);backdrop-filter:blur(10px);z-index:20}
 nav button{width:92px;height:56px;border-radius:22px;border:0;background:transparent;color:var(--muted);font-size:22px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
@@ -108,7 +112,7 @@ nav button.on{background:var(--a);color:var(--ink);box-shadow:0 0 18px var(--a)}
       <g transform="rotate(-14 300 112)"><path d="M40 112 Q300 150 560 112" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/></g>
     </svg>
     <div class="txt">
-      <div class="sys"><i id="dot"></i><span>BACKEND: OFFLINE</span></div>
+      <div class="sys"><i id="dot"></i><span id="sysTxt">BACKEND: MEMERIKSA...</span></div>
       <p>&gt; MALIX AUTO SCRAPER</p>
       <small>&gt; URL masuk, scraper dibuat dan diuji otomatis</small>
     </div>
@@ -122,7 +126,7 @@ nav button.on{background:var(--a);color:var(--ink);box-shadow:0 0 18px var(--a)}
     <div id="msg" class="msg" role="status"></div>
   </section>
 
-  <div class="banner">Ini baru tampilan. Backend belum terhubung, jadi belum ada analisis atau tes nyata. Tidak ada hasil palsu yang ditampilkan.</div>
+  <div class="banner">Ini baru tampilan. Fitur analisis dan tes nyata belum dibuat. Tidak ada hasil palsu yang ditampilkan.</div>
 
   <div class="hud"><span class="tab">RIWAYAT</span><div class="stat" style="--c:var(--a)"><div class="ico"><svg class="i"><use href="#bars"/></svg></div><div><h3>TOTAL TES</h3><small>&gt; tersimpan di perangkat ini</small></div><div class="val" id="nTests">0</div></div></div>
   <div class="hud c2"><span class="tab">PERANGKAT</span><div class="stat" style="--c:var(--a2)"><div class="ico"><svg class="i"><use href="#batt"/></svg></div><div><h3>BATERAI HP</h3><small id="battSub">&gt; membaca baterai...</small></div><div class="val" id="batt">-</div></div></div>
@@ -145,8 +149,8 @@ nav button.on{background:var(--a);color:var(--ink);box-shadow:0 0 18px var(--a)}
 <div class="page hidden" id="p-history">
   <section class="hud c2" id="riwayat"><span class="tab">HISTORY</span>
     <h2>Test History <button class="btn ghost" id="clear" style="float:right;padding:6px 10px;font-size:12px">Hapus</button></h2>
-    <div class="scroll"><table><thead><tr><th>URL</th><th>Waktu</th><th>Versi</th><th>Validasi</th><th>Unit</th><th>Functional</th><th>Auto-fix</th><th>Status</th></tr></thead><tbody id="hist"></tbody></table></div>
-    <p class="empty" id="histEmpty">Belum ada riwayat.</p></section>
+    <div id="hist"></div>
+    <p class="empty" id="histEmpty">Belum ada tes nyata yang tercatat.</p></section>
 
 </div>
 <div class="page hidden" id="p-contact">
@@ -176,14 +180,13 @@ function validUrl(v){try{const u=new URL(v);return /^https?:$/.test(u.protocol)&
 $("go").onclick=()=>{
   const v=$("url").value.trim(),m=$("msg");
   if(!validUrl(v)){m.className="msg err";m.textContent="URL tidak valid atau menunjuk ke alamat internal. Gunakan http(s) ke website publik.";return}
-  m.className="msg";m.textContent="Backend belum terhubung. Tes nyata belum bisa dijalankan, jadi status tetap UNVERIFIED.";
+  m.className="msg";m.textContent=backendUp?"API aktif, tetapi mesin analisis dan tes belum dibuat, jadi status tetap UNVERIFIED dan tidak dicatat di riwayat.":"Backend tidak terjangkau, jadi tes nyata belum bisa dijalankan. Status tetap UNVERIFIED dan tidak dicatat di riwayat.";
   setState("UNVERIFIED",null);
-  const h=load();h.unshift({url:v,time:new Date().toLocaleString("id-ID"),ver:"-",val:"-",unit:"-",fn:"Belum dijalankan",fix:0,status:"UNVERIFIED"});save(h.slice(0,20));render();
 };
-function load(){try{return JSON.parse(localStorage.getItem("malix_hist")||"[]")}catch(e){return[]}}
+function load(){try{return JSON.parse(localStorage.getItem("malix_hist")||"[]").filter(r=>r.fn!=="Belum dijalankan")}catch(e){return[]}}
 function save(h){try{localStorage.setItem("malix_hist",JSON.stringify(h))}catch(e){}}
 function render(){const h=load(),b=$("hist");b.innerHTML="";$("nTests").textContent=h.length;$("histEmpty").style.display=h.length?"none":"block";
-  h.forEach(r=>{const tr=document.createElement("tr");[r.url,r.time,r.ver,r.val,r.unit,r.fn,r.fix,r.status].forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.appendChild(td)});b.appendChild(tr)})}
+  h.forEach(r=>{const d=document.createElement("div");d.className="hc";const t=document.createElement("div");t.className="stat";const u=document.createElement("b");u.textContent=r.url;const s=document.createElement("span");s.className="badge "+r.status;s.style.float="none";s.style.marginLeft="auto";s.textContent=r.status;t.append(u,s);const m=document.createElement("small");m.textContent=r.time+" | versi "+r.ver;const g=document.createElement("small");g.textContent="Validasi: "+r.val+" | Unit: "+r.unit+" | Functional: "+r.fn+" | Auto-fix: "+r.fix;d.append(t,m,g);b.appendChild(d)})}
 $("clear").onclick=()=>{save([]);render()};
 $("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("code").textContent);$("copy").textContent="Tersalin"}catch(e){$("copy").textContent="Gagal menyalin"}setTimeout(()=>$("copy").textContent="Copy Code",1500)};
 $("dl").onclick=()=>{const a=document.createElement("a");a.href="data:text/javascript;charset=utf-8,"+encodeURIComponent($("code").textContent);a.download="scraper.js";a.click()};
@@ -200,7 +203,5 @@ if(!OWNER.wa&&!OWNER.tg){$("ownerNote").textContent="Kontak owner belum diisi.";
 (function(){const v=$("batt"),s=$("battSub");
 if(!navigator.getBattery){v.textContent="--%";s.textContent="> browser ini tidak mendukung, buka di Chrome Android";return}
 navigator.getBattery().then(b=>{const up=()=>{v.textContent=Math.min(100,Math.max(1,Math.round(b.level*100)))+"%";s.textContent="> "+(b.charging?"sedang mengisi daya":"tidak mengisi daya")};up();["levelchange","chargingchange"].forEach(e=>b.addEventListener(e,up))}).catch(()=>{v.textContent="--%";s.textContent="> akses baterai ditolak"})})();
-setState("MENUNGGU",null);render();
-</script>
-</body>
-</html>
+let backendUp=false;
+async function ping(){const el=document.querySelector(".sys"),
